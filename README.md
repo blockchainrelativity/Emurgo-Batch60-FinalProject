@@ -1,3 +1,4 @@
+# This is a template for a Nix environment that can run plutus-apps. It has been developed and provided by: Snapbrillia
 # A Snapbrillia Plutus Apps template on Gitpod (In-Progress)
 
 This is a Plutus Apps template environment on [Gitpod](https://www.gitpod.io/).
