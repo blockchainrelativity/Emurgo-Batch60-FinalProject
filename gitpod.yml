@@ -1,0 +1,34 @@
+image:
+  file: .gitpod.Dockerfile
+
+ports:
+  - name: Server
+    description: The main application web server
+    port: 8080
+    onOpen: open-browser
+  - name: Client
+    description: The main application web client
+    port: 8009
+    onOpen: open-preview
+
+tasks:
+  - name: Setup
+    init: |
+        git clone https://github.com/input-output-hk/plutus-apps &&
+        gp sync-done bundle
+    command: cd plutus-apps && nix-shell --extra-experimental-features flakes && direnv allow 
+  - name: Build Packages
+    init: gp sync-await bundle
+    command: cd plutus-apps && nix build -f default.nix plutus-apps.haskell.packages.plutus-pab.components.library --extra-experimental-features nix-command
+  - name: Start Server
+    init: gp sync-await bundle
+    command: cd plutus-apps && nix-shell --extra-experimental-features flakes
+  - name: Start Client
+    init: gp sync-await bundle
+    command: cd plutus-apps && nix-shell --extra-experimental-features flakes 
+
+vscode:
+  extensions:
+    - haskell.haskell
+    - s0kil.vscode-hsx
+    - arrterian.nix-env-selector
